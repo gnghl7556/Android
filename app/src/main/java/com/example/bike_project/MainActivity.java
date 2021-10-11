@@ -71,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         btnSend = (Button) findViewById(R.id.btn_send);
         listView = (ListView) findViewById(R.id.listview);
 
+        btnSearch.setOnClickListener(view ->{
+
+        });
+
+
+
         // Show paired devices
         btArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         deviceAddressArray = new ArrayList<>();
