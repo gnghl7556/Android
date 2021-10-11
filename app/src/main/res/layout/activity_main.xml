@@ -14,7 +14,7 @@
         android:text="status"
         android:textColor="#FFFFFF"
 
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,6 @@
     <Button
         android:id="@+id/btn_paired"
         android:text="페어링된 디바이스"
-        android:onClick="onClickButtonPaired"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
 
@@ -33,7 +32,6 @@
     <Button
         android:id="@+id/btn_search"
         android:text="검색하기"
-        android:onClick="onClickButtonSearch"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
 
@@ -44,7 +42,6 @@
     <Button
         android:id="@+id/btn_send"
         android:text="[LED] ON"
-        android:onClick="onClickButtonSend"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
 
@@ -54,7 +51,6 @@
     <Button
         android:id="@+id/btn_send2"
         android:text="[LED] OFF"
-        android:onClick="onClickButtonSend2"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
 

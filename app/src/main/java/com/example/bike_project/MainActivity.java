@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
 
     TextView textStatus;
-    Button btnParied, btnSearch, btnSend;
+    Button btnParied, btnSearch, btnSend, btnSend2;
     ListView listView;
 
     BluetoothAdapter btAdapter;
@@ -69,12 +69,24 @@ public class MainActivity extends AppCompatActivity {
         btnParied = (Button) findViewById(R.id.btn_paired);
         btnSearch = (Button) findViewById(R.id.btn_search);
         btnSend = (Button) findViewById(R.id.btn_send);
+        btnSend2 = (Button) findViewById(R.id.btn_send2);
         listView = (ListView) findViewById(R.id.listview);
 
         btnSearch.setOnClickListener(view ->{
-
+            onClickButtonSearch();
         });
 
+        btnParied.setOnClickListener(view ->{
+            onClickButtonPaired();
+        });
+
+        btnSend.setOnClickListener( view ->{
+            onClickButtonSend();
+        });
+
+        btnSend2.setOnClickListener( view->{
+            onClickButtonSend2();
+        });
 
 
         // Show paired devices
@@ -85,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new myOnItemClickListener());
     }
 
-    public void onClickButtonPaired(View view){
+    public void onClickButtonPaired(){
         btArrayAdapter.clear();
         if(deviceAddressArray!=null && !deviceAddressArray.isEmpty()){ deviceAddressArray.clear(); }
         pairedDevices = btAdapter.getBondedDevices();
@@ -100,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickButtonSearch(View view){
+    public void onClickButtonSearch(){
         // Check if the device is already discovering
         if(btAdapter.isDiscovering()){
             btAdapter.cancelDiscovery();
@@ -120,12 +132,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Send string "a"
-    public void onClickButtonSend(View view){
+    public void onClickButtonSend(){
         if(connectedThread!=null){ connectedThread.write("1"); }
         else
             connectedThread.write("2");
     }
-    public void onClickButtonSend2(View view){
+    public void onClickButtonSend2(){
         if(connectedThread!=null){ connectedThread.write("2"); }
         else
             connectedThread.write("1");
