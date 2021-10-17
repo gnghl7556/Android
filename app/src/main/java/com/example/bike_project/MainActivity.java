@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     String TAG = "MainActivity";
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
-
     TextView textStatus;
     Button btnSearch, btnNext;
     ImageView btnParied;
