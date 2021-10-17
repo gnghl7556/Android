@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
 
     TextView textStatus;
-    Button btnParied, btnSearch, btnSend, btnSend2, btnNext;
+    Button btnSearch, btnNext;
+    ImageView btnParied;
+
     ListView listView;
 
     BluetoothAdapter btAdapter;
@@ -47,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int REQUEST_ENABLE_BT = 1;
     BluetoothSocket btSocket = null;
-    ConnectedThread connectedThread;
 
+
+    boolean Led_point = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,13 +71,12 @@ public class MainActivity extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE); // 블루투스 기능을 ON시킨다.
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-
+        Intent intent = new Intent(this,MainActivity2.class);
         // variables
         textStatus = (TextView) findViewById(R.id.text_status);
-        btnParied = (Button) findViewById(R.id.btn_paired);
+        btnParied = (ImageView) findViewById(R.id.btn_paired);
         btnSearch = (Button) findViewById(R.id.btn_search);
-        btnSend = (Button) findViewById(R.id.btn_send);
-        btnSend2 = (Button) findViewById(R.id.btn_send2);
+
         listView = (ListView) findViewById(R.id.listview);
         btnNext = (Button) findViewById(R.id.btn_next);
 
@@ -83,14 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         btnParied.setOnClickListener(view -> {
             onClickButtonPaired();
-        });
-
-        btnSend.setOnClickListener(view -> {
-            onClickButtonSend();
-        });
-
-        btnSend2.setOnClickListener(view -> {
-            onClickButtonSend2();
         });
 
         btnNext.setOnClickListener(view -> {
@@ -144,24 +139,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Send string "a"
-    public void onClickButtonSend() {
-        if (connectedThread != null) {
-            connectedThread.write("1");
-        } else
-            connectedThread.write("2");
-    }
-
-    public void onClickButtonSend2() {
-        if (connectedThread != null) {
-            connectedThread.write("2");
-        } else
-            connectedThread.write("1");
-    }
 
     public void onClickButtonNext() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-        startActivity(intent);
+        Intent intent2 = new Intent(getApplicationContext(), MainActivity2.class);
+        startActivity(intent2);
     }
 
 
@@ -200,6 +181,8 @@ public class MainActivity extends AppCompatActivity {
 
             final String name = btArrayAdapter.getItem(position); // get name
             final String address = deviceAddressArray.get(position); // get address
+
+
             boolean flag = true;
 
             BluetoothDevice device = btAdapter.getRemoteDevice(address);
@@ -217,8 +200,9 @@ public class MainActivity extends AppCompatActivity {
             // start bluetooth communication
             if(flag){
                 textStatus.setText("connected to "+name);
-                connectedThread = new ConnectedThread(btSocket);
-                connectedThread.start();
+                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+                intent.putExtra("bluetooth_address",address);
+                startActivity(intent);
             }
 
         }
@@ -234,4 +218,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return  device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
     }
-}}
+}
+
+}

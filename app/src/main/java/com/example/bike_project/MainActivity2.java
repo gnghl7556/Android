@@ -7,11 +7,21 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -19,11 +29,11 @@ import java.util.UUID;
 public class MainActivity2 extends AppCompatActivity {
     String TAG = "MainActivity2";
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
-
-    Button btnBackPage, btnCheckSpeed ,btnLed, btnBackSensor, btnLock, btnCall;
+    Button btnBackPage;
+    ImageView btnCheckSpeed ,btnLed, btnBackSensor, btnLock, btnCall;
+    TextView textView2,textView3,textView4,textView5,textView6;
 
     BluetoothAdapter btAdapter;
-    Set<BluetoothDevice> pairedDevices;
     ArrayAdapter<String> btArrayAdapter;
     ArrayList<String> deviceAddressArray;
 
@@ -31,32 +41,27 @@ public class MainActivity2 extends AppCompatActivity {
     BluetoothSocket btSocket = null;
     ConnectedThread connectedThread;
 
+
+    int Led_bool = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        String name = getIntent().getStringExtra("bluetooth_address");
+
+
         // Get permission
-        String[] permission_list = {
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-        };
-        ActivityCompat.requestPermissions(MainActivity2.this, permission_list, 1);
 
         // Enable bluetooth
-        btAdapter = BluetoothAdapter.getDefaultAdapter(); //이 앱을 설치한 스마트폰이 블루투스를 지원하지 않는다면 getDefaultAdater()함수를 사용 시, null값을 출력한다.
-        if (!btAdapter.isEnabled()) { // 이 스마트폰에서 블루투스사용 기능이 OFF상태라면
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE); // 블루투스 기능을 ON시킨다.
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
-
         //variables
         btnBackPage = (Button) findViewById(R.id.btnBackPage);
-        btnCheckSpeed = (Button) findViewById(R.id.btnCheckSpeed);
-        btnLed = (Button) findViewById(R.id.btnLed);
-        btnBackSensor = (Button) findViewById(R.id.btnBackSensor);
-        btnLock = (Button) findViewById(R.id.btnLock);
-        btnCall = (Button) findViewById(R.id.btnCall);
+        btnCheckSpeed = (ImageView) findViewById(R.id.btnCheckSpeed);
+        btnLed = (ImageView) findViewById(R.id.btnLed);
+        btnBackSensor = (ImageView) findViewById(R.id.btnBackSensor);
+        btnLock = (ImageView) findViewById(R.id.btnLock);
+        btnCall = (ImageView) findViewById(R.id.btnCall);
 
         btnBackPage.setOnClickListener(view ->{
             onClickButtonBackPage();
@@ -93,6 +98,13 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     public void onClickButtonLed() {
+        if (Led_bool != 1 ) {
+            connectedThread.write("1");
+            Led_bool = 1;
+        } else {
+            connectedThread.write("2");
+            Led_bool = 0;
+        }
     }
 
     public void onClickButtonCheckSpeed() {
@@ -102,4 +114,31 @@ public class MainActivity2 extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
+    // Create a BroadcastReceiver for ACTION_FOUND.
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Discovery has found a device. Get the BluetoothDevice
+                // object and its info from the Intent.
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                String deviceName = device.getName();
+                String deviceHardwareAddress = device.getAddress(); // MAC address
+                btArrayAdapter.add(deviceName);
+                deviceAddressArray.add(deviceHardwareAddress);
+                btArrayAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+    public BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
+        try {
+            final Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);
+            return (BluetoothSocket) m.invoke(device, BT_MODULE_UUID);
+        } catch (Exception e) {
+            Log.e(TAG, "Could not create Insecure RFComm Connection",e);
+        }
+        return  device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
+    }
 }
+
