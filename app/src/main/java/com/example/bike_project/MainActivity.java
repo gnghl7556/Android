@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,8 +23,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -48,10 +45,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> deviceAddressArray;
 
     private final static int REQUEST_ENABLE_BT = 1;
-    BluetoothSocket btSocket = null;
 
-
-    boolean Led_point = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,10 +92,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(btArrayAdapter);
 
         listView.setOnItemClickListener(new myOnItemClickListener());
-
     }
-
-
     public void onClickButtonPaired() {
         btArrayAdapter.clear(); //리스트 뷰를 클리어
         if (deviceAddressArray != null && !deviceAddressArray.isEmpty()) {
@@ -184,39 +175,31 @@ public class MainActivity extends AppCompatActivity {
 
             boolean flag = true;
 
-            BluetoothDevice device = btAdapter.getRemoteDevice(address);
+            textStatus.setText("connected to "+name);
+            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+            intent.putExtra("bluetooth_address",address);
+            startActivity(intent);
 
-            // create & connect socket
-            try {
-                btSocket = createBluetoothSocket(device);
-                btSocket.connect();
-            } catch (IOException e) {
-                flag = false;
-                textStatus.setText("connection failed!");
-                e.printStackTrace();
-            }
-
-            // start bluetooth communication
-            if(flag){
-                textStatus.setText("connected to "+name);
-                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
-                intent.putExtra("bluetooth_address",address);
-                startActivity(intent);
-            }
+//            // create & connect socket
+//            try {
+//                btSocket = createBluetoothSocket(device);
+//                btSocket.connect();
+//            } catch (IOException e) {
+//                flag = false;
+//                textStatus.setText("connection failed!");
+//                e.printStackTrace();
+//            }
+//
+//            // start bluetooth communication
+//            if(flag){
+//                textStatus.setText("connected to "+name);
+//                Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+//                intent.putExtra("bluetooth_address",address);
+//                startActivity(intent);
+//            }
 
         }
 
-
-
-    private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
-        try {
-            final Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", UUID.class);
-            return (BluetoothSocket) m.invoke(device, BT_MODULE_UUID);
-        } catch (Exception e) {
-            Log.e(TAG, "Could not create Insecure RFComm Connection",e);
-        }
-        return  device.createRfcommSocketToServiceRecord(BT_MODULE_UUID);
-    }
 }
 
 }

@@ -132,14 +132,14 @@
         android:layout_width="400px"
         android:layout_height="300px"
         android:layout_marginTop="70dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/setbtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         app:srcCompat="@drawable/dark_warning_on" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/setbtn"
         android:layout_width="400px"
         android:layout_height="300px"
         android:layout_marginTop="70dp"
@@ -159,6 +159,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnCall"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintTop_toBottomOf="@+id/setbtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
