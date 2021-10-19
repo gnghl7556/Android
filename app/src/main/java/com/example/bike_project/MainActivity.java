@@ -5,7 +5,6 @@ package com.example.bike_project;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,14 +24,11 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
+
 
 
 
 public class MainActivity extends AppCompatActivity {
-
-    String TAG = "MainActivity";
-    UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
     TextView textStatus;
     Button btnSearch, btnNext;
     ImageView btnParied;
@@ -43,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     Set<BluetoothDevice> pairedDevices;
     ArrayAdapter<String> btArrayAdapter;
     ArrayList<String> deviceAddressArray;
-
+    String temp_name = null;
+    String temp_addres = null;
     private final static int REQUEST_ENABLE_BT = 1;
 
     @Override
@@ -131,8 +128,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onClickButtonNext() {
-        Intent intent2 = new Intent(getApplicationContext(), MainActivity2.class);
-        startActivity(intent2);
+        if(temp_name == null) {
+            Toast.makeText(getApplicationContext(),"블루투스를 페어링 해주세요",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getApplicationContext(),temp_name+"에 연결",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+            intent.putExtra("bluetooth_address",temp_addres);
+            startActivity(intent);
+        }
     }
 
 
@@ -171,9 +174,8 @@ public class MainActivity extends AppCompatActivity {
 
             final String name = btArrayAdapter.getItem(position); // get name
             final String address = deviceAddressArray.get(position); // get address
-
-
-            boolean flag = true;
+            temp_name = name;
+            temp_addres = address;
 
             textStatus.setText("connected to "+name);
             Intent intent = new Intent(getApplicationContext(), MainActivity2.class);

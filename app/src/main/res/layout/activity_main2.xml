@@ -45,6 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btnCheckSpeed" />
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="충격알림"
@@ -92,7 +93,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/dark_speed_on" />
+        app:srcCompat="@drawable/dark_speed_off" />
 
     <ImageView
         android:id="@+id/btnLed"
@@ -103,7 +104,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnCheckSpeed"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/dark_led_on" />
+        app:srcCompat="@drawable/dark_led_off" />
 
     <ImageView
         android:id="@+id/btnBackSensor"
@@ -114,7 +115,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:srcCompat="@drawable/dark_sensor_on" />
+        app:srcCompat="@drawable/dark_sensor_off" />
 
     <ImageView
         android:id="@+id/btnLock"
@@ -125,7 +126,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnBackSensor"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:srcCompat="@drawable/dark_lock_on" />
+        app:srcCompat="@drawable/dark_lock_off" />
 
     <ImageView
         android:id="@+id/btnCall"
@@ -136,7 +137,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:srcCompat="@drawable/dark_warning_on" />
+        app:srcCompat="@drawable/dark_warning_off" />
 
     <ImageView
         android:id="@+id/setbtn"
