@@ -31,7 +31,7 @@ public class serviceActivity extends AppCompatActivity {
 
     BluetoothSocket btSocket = null;
     ConnectedThread connectedThread;
-
+    String tempaddres;
     boolean Speed_bool = false;
     boolean Sensor_bool = false;
     boolean Lock_bool = false;
@@ -48,7 +48,7 @@ public class serviceActivity extends AppCompatActivity {
 
 
         final String address = getIntent().getStringExtra("bluetooth_address");
-
+        tempaddres = address;
         BluetoothDevice device = btAdapter.getRemoteDevice(address);
         boolean flag = true;
 
@@ -156,6 +156,15 @@ public class serviceActivity extends AppCompatActivity {
             btnCheckSpeed.setImageResource(R.drawable.dark_speed_on);
             textView5.setTextColor(Color.parseColor("#fa9b36"));
             Speed_bool = true;
+            Intent intent = new Intent(getApplicationContext(), speedActivity.class);
+            intent.putExtra("bluetooth_address",tempaddres);
+            connectedThread.cancel(); //쓰레드를 취소
+            try {
+                btSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            startActivity(intent);
         }else{
             btnCheckSpeed.setImageResource(R.drawable.dark_speed_off);
             textView5.setTextColor(Color.parseColor("#ffffff"));

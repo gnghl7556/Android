@@ -7,13 +7,20 @@
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/font/fontstyle.xml" value="0.4390625" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/activity_main2.xml" value="0.18" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/activity_maps_naver.xml" value="0.3328125" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/eventcall_layout.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/fragment_1.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/fragment_2.xml" value="0.2692502532928065" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/service_layout.xml" value="0.3807291666666667" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/setting_layout.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/speed_layout.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/speed_layout2.xml" value="0.22" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/speedcheck.xml" value="0.3082077051926298" />
         <entry key="..\:/Users/PC/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/simple_list_item_1.xml" value="0.5536458333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
