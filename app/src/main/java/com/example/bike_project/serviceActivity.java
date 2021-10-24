@@ -2,39 +2,25 @@ package com.example.bike_project;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.telecom.Call;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Set;
 import java.util.UUID;
 
-public class MainActivity2 extends AppCompatActivity {
+public class serviceActivity extends AppCompatActivity {
     String TAG = "MainActivity2";
     UUID BT_MODULE_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // "random" unique identifier
     Button btnBackPage;
@@ -55,7 +41,7 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.service_layout);
 
         btAdapter = BluetoothAdapter.getDefaultAdapter(); //이 앱을 설치한 스마트폰이 블루투스를 지원하지 않는다면 getDefaultAdater()함수를 사용 시, null값을 출력한다.
 
@@ -123,10 +109,12 @@ public class MainActivity2 extends AppCompatActivity {
 
     public void onClickButtonLock() {
         if (Lock_bool!= true){
+            connectedThread.write("7");
             btnLock.setImageResource(R.drawable.dark_lock_on);
             textView4.setTextColor(Color.parseColor("#fa9b36"));
             Lock_bool = true;
         }else{
+            connectedThread.write("8");
             btnLock.setImageResource(R.drawable.dark_lock_off);
             textView4.setTextColor(Color.parseColor("#ffffff"));
             Lock_bool = false;
@@ -135,10 +123,12 @@ public class MainActivity2 extends AppCompatActivity {
 
     public void onClickButtonBackSensor() {
         if (Sensor_bool!= true){
+            connectedThread.write("3");
             btnBackSensor.setImageResource(R.drawable.dark_sensor_on);
             textView3.setTextColor(Color.parseColor("#fa9b36"));
             Sensor_bool = true;
         }else{
+            connectedThread.write("4");
             btnBackSensor.setImageResource(R.drawable.dark_sensor_off);
             textView3.setTextColor(Color.parseColor("#ffffff"));
             Sensor_bool = false;
@@ -148,8 +138,6 @@ public class MainActivity2 extends AppCompatActivity {
     public void onClickButtonLed() {
         if (Led_bool != true ) {
             connectedThread.write("1");
-            connectedThread.write("3");
-            connectedThread.write("5");
             Led_bool = true;
             btnLed.setImageResource(R.drawable.dark_led_on);
             textView6.setTextColor(Color.parseColor("#fa9b36"));
@@ -157,8 +145,6 @@ public class MainActivity2 extends AppCompatActivity {
 
         } else {
             connectedThread.write("2");
-            connectedThread.write("4");
-            connectedThread.write("6");
             Led_bool = false;
             btnLed.setImageResource(R.drawable.dark_led_off);
             textView6.setTextColor(Color.parseColor("#ffffff"));

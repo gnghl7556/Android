@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE); // 블루투스 기능을 ON시킨다.
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
-        Intent intent = new Intent(this,MainActivity2.class);
+        Intent intent = new Intent(this, serviceActivity.class);
         // variables
         textStatus = (TextView) findViewById(R.id.text_status);
         btnParied = (ImageView) findViewById(R.id.btn_paired);
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"블루투스를 페어링 해주세요",Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(getApplicationContext(),temp_name+"에 연결",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+            Intent intent = new Intent(getApplicationContext(), serviceActivity.class);
             intent.putExtra("bluetooth_address",temp_addres);
             startActivity(intent);
         }
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             temp_addres = address;
 
             textStatus.setText("connected to "+name);
-            Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+            Intent intent = new Intent(getApplicationContext(), serviceActivity.class);
             intent.putExtra("bluetooth_address",address);
             startActivity(intent);
 
