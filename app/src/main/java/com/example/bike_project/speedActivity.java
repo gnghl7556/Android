@@ -1,11 +1,20 @@
 package com.example.bike_project;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,134 +26,472 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.example.bike_project.R.id;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.shashank.sony.fancytoastlib.FancyToast;
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapView;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 @SuppressLint({ "SetJavaScriptEnabled", "NewApi" })
-public class speedActivity extends Activity {
-    Button btnback2;
-    String temp_addres = null;
-    private String mInputUrl = "http://nams.ddns.net:8080/web2/test.jsp";
+public class speedActivity extends Activity implements
+        MapView.MapViewEventListener,
+        MapView.POIItemEventListener,
+        MapView.CurrentLocationEventListener {
+    private LocationListener locationListener;
+    private EditText spEditext;
+    private EditText epEditext;
+    private Button findbutton;
+    private Button findStartLocation;
+    private Button mSearchbymap;
+    private MapView mapView;
+    private FloatingActionButton myposition;
+    public LocationManager locationManager;
+    private boolean mapsSelection = false;
+    double latitude, longitude;
+    RecyclerView recyclerView,recyclerView2;
+    ArrayList<Document> documentArrayList = new ArrayList<>(); //지역명 검색 결과 리스트
+    RelativeLayout mLoaderLayout;
 
-    private EditText mEditText;
-    private WebView mWebView;
-    private WebSettings mWebSettings;
-    private ProgressBar mProgressBar;
-    private InputMethodManager mInputMethodManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.speed_layout2);
-        final String address = getIntent().getStringExtra("bluetooth_address");
-        temp_addres = address;
 
-        btnback2 = findViewById(R.id.btnback2);
+        final Geocoder geocoder = new Geocoder(this); //카카오맵
+        spEditext = (EditText) findViewById(R.id.etOrigin);
+        epEditext = (EditText) findViewById(R.id.etDestination);
+        findbutton = (Button) findViewById(R.id.btnFindPath);
+        findStartLocation = (Button) findViewById(R.id.myFindPath);
+        mSearchbymap = (Button) findViewById(R.id.myMapPath);
+        myposition = (FloatingActionButton) findViewById(R.id.mypositions);
+        mapView = (MapView) findViewById(R.id.map_view);
 
-        mEditText = (EditText)findViewById(R.id.edit_Url);
-        mWebView = (WebView)findViewById(R.id.webview);
+        mapView.setCurrentLocationEventListener(this);
+        mapView.setHDMapTileEnabled(true); // 고해상도 지도 타일 사용
+        mapView.setMapViewEventListener(this);
+        mapView.setPOIItemEventListener(this);
 
-        mWebView.setWebViewClient(new WebViewClient());                 //클릭 시 새창 안뜨게
-        mWebSettings = mWebView.getSettings();                          //세부 세팅 등록
-        mWebSettings.setJavaScriptEnabled(true);                        //웹페이지 자바스크립트 허용 여부
-        mWebSettings.setSupportMultipleWindows(false);                  //새창 띄우기 허용 여부
-        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(false);   //자바스크립트 새창 띄우기(멀티뷰)허용 여부
-        mWebSettings.setLoadWithOverviewMode(true);                     //메타태그 허용 여부
-        mWebSettings.setUseWideViewPort(true);                          //화면 사이즈 맞추기 허용 여부
-        mWebSettings.setSupportZoom(false);                             //화면 줌 허용 여부
-        mWebSettings.setBuiltInZoomControls(false);                     //화면 확대 축소 허용 여부
-        mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);//컨텐츠 사이즈 맞추기
-        mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);           //브라우저 캐시 허용여부
-        mWebSettings.setDomStorageEnabled(true);                        //로컬저장소 허용 여부
+        recyclerView = findViewById(R.id.map_recyclerview1);
+        recyclerView2 = findViewById(R.id.map_recyclerview2);
+        mLoaderLayout = findViewById(R.id.loaderLayout);
 
+        LocationAdapter locationAdapter = new LocationAdapter(documentArrayList, getApplicationContext(), spEditext, recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false); //레이아웃매니저 생성
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL)); //아래구분선 세팅
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(locationAdapter);
+        LocationAdapter locationAdapter2 = new LocationAdapter(documentArrayList, getApplicationContext(), epEditext, recyclerView2);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false); //레이아웃매니저 생성
+        recyclerView2.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL)); //아래구분선 세팅
+        recyclerView2.setLayoutManager(layoutManager2);
+        recyclerView2.setAdapter(locationAdapter2);
 
-        mWebView.loadUrl(mInputUrl);
-        mWebView.setVerticalScrollBarEnabled(false);
-        mWebView.setHorizontalScrollBarEnabled(false);
-        mWebView.setDefaultFocusHighlightEnabled(false);
+        //final String address = getIntent().getStringExtra("bluetooth_address");
+        findbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sped1 = spEditext.getText().toString();
+                String eped1 = epEditext.getText().toString();
+                if (sped1 == null || sped1.length() == 0) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.input_start), Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (eped1 == null || eped1.length() == 0) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.input_end), Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    List<Address> list = null;
+                    List<Address> list1 = null;
+                    try {
+                        list = geocoder.getFromLocationName(sped1, 10);
+                        list1 = geocoder.getFromLocationName(eped1, 10);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (list != null && list1 != null) {
+                        if (list.size() == 0 || list1.size() == 0) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Address addr = list.get(0);
+                            Address addr1 = list1.get(0);
+                            double splat = addr.getLatitude();
+                            double splon = addr.getLongitude();
+                            double edlat = addr1.getLatitude();
+                            double edlon = addr1.getLongitude();
+                            try {
+                                String navi = "daummaps://route?sp=" + splat + "," + splon + "&ep=" + edlat + "," + edlon + "&by=BICYCLE";
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(navi));
+                                startActivity(intent);
 
-        btnback2.setOnClickListener(view -> {
-            onClickButtonBack();
+                            } catch (Exception e) {
+                                String navi = "https://play.google.com/store/apps/details?id=net.daum.android.map";
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(navi));
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), getString(R.string.navi_install), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                }
+
+            }
         });
-//        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
-//        findViewById(R.id.btn_go).setOnClickListener(onClickListener);
-//
-//        mInputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//
-//        mWebView.setWebChromeClient(new webViewChrome());
-//        mWebView.setWebViewClient(new webViewClient());
-//
-//        mWebSettings.setBuiltInZoomControls(true);
-//
-//        mWebView.loadUrl(mInputUrl);
-//        mEditText.setHint(mInputUrl);
+        //현재 위치를 출발지로
+        findStartLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    spEditext.setText("");
+
+                    if (ContextCompat.checkSelfPermission(speedActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_DENIED &&
+                            ContextCompat.checkSelfPermission(speedActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_DENIED) {
+                        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                        locationListener = new LocationListener() {
+                            @Override
+                            public void onLocationChanged(android.location.Location location) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+
+                            @Override
+                            public void onStatusChanged(String provider, int status, Bundle extras) {
+                            }
+
+                            @Override
+                            public void onProviderEnabled(String provider) {
+                            }
+
+                            @Override
+                            public void onProviderDisabled(String provider) {
+
+                            }
+                        };
+
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+                        String locationProvider = LocationManager.NETWORK_PROVIDER;
+                        latitude = locationManager.getLastKnownLocation(locationProvider).getLatitude();
+                        longitude = locationManager.getLastKnownLocation(locationProvider).getLongitude();
+
+                        List<Address> list = null;
+                        list = geocoder.getFromLocation(latitude, longitude, 10);
+                        if (list != null) {
+                            if (list.size() == 0)
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_route), Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(getApplicationContext(), getString(R.string.set_current_loc), Toast.LENGTH_SHORT).show();
+                            spEditext.setText(list.get(0).getAddressLine(0));
+                            recyclerView.setVisibility(View.GONE);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), e.toString() + getString(R.string.error_route), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //지도에서 도착지 선택
+        mSearchbymap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mapsSelection) {
+                    mapsSelection = true;
+                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+                    mapView.setShowCurrentLocationMarker(false);
+                    Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.exit_map_loc), Toast.LENGTH_SHORT).show();
+                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+                    mapsSelection = false;
+                }
+            }
+        });
+
+
+        // editText 검색 텍스처이벤트
+        spEditext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+                // 입력하기 전에
+
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                if (charSequence.length() >= 1) {
+                    // if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+
+                    documentArrayList.clear();
+                    locationAdapter.clear();
+                    locationAdapter.notifyDataSetChanged();
+                    ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                    Call<CategoryResult> call = apiInterface.getSearchLocation(getString(R.string.restapi_key), charSequence.toString(), 15);
+                    call.enqueue(new Callback<CategoryResult>() {
+                        @Override
+                        public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
+                            if (response.isSuccessful()) {
+                                assert response.body() != null;
+                                for (Document document : response.body().getDocuments()) {
+                                    locationAdapter.addItem(document);
+                                }
+                                locationAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
+
+                        }
+                    });
+                    //}
+                    //mLastClickTime = SystemClock.elapsedRealtime();
+                } else {
+                    if (charSequence.length() <= 0) {
+                        recyclerView.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // 입력이 끝났을 때
+            }
+        });
+
+        spEditext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
+        spEditext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FancyToast.makeText(getApplicationContext(), "검색리스트에서 장소를 선택해주세요", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();
+            }
+        });
+
+        // editText 검색 텍스처이벤트
+        epEditext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+                // 입력하기 전에
+                recyclerView2.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                if (charSequence.length() >= 1) {
+                    // if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+
+                    documentArrayList.clear();
+                    locationAdapter2.clear();
+                    locationAdapter2.notifyDataSetChanged();
+                    ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                    Call<CategoryResult> call = apiInterface.getSearchLocation(getString(R.string.restapi_key), charSequence.toString(), 15);
+                    call.enqueue(new Callback<CategoryResult>() {
+                        @Override
+                        public void onResponse(@NotNull Call<CategoryResult> call, @NotNull Response<CategoryResult> response) {
+                            if (response.isSuccessful()) {
+                                assert response.body() != null;
+                                for (Document document : response.body().getDocuments()) {
+                                    locationAdapter2.addItem(document);
+                                }
+                                locationAdapter2.notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<CategoryResult> call, @NotNull Throwable t) {
+
+                        }
+                    });
+                    //}
+                    //mLastClickTime = SystemClock.elapsedRealtime();
+                } else {
+                    if (charSequence.length() <= 0) {
+                        recyclerView2.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // 입력이 끝났을 때
+            }
+        });
+
+        epEditext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                } else {
+                    recyclerView2.setVisibility(View.GONE);
+                }
+            }
+        });
+        epEditext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FancyToast.makeText(getApplicationContext(), "검색리스트에서 장소를 선택해주세요", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();
+            }
+        });
+
+
+        myposition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
+            }
+        });
     }
 
-    private void onClickButtonBack() { //저장해놨던 데이터 그대로 2에 전달
-        Intent intent = new Intent(getApplicationContext(), serviceActivity.class);
-        intent.putExtra("bluetooth_address",temp_addres);
-        startActivity(intent);
+
+
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
     }
 
-    //Button Event를 처리
-    View.OnClickListener onClickListener = new View.OnClickListener() {
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
 
-        @Override
-        public void onClick(View v) {
-            switch(v.getId()) {
-                case R.id.btn_go:
-                    //InputMethodManager를 이용하여 키보드를 숨김
-                    mInputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-                    mInputUrl = httpInputCheck(mEditText.getText().toString());
+    }
 
-                    if(mInputUrl == null) break;
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+    }
 
-                    //페이지를 불러온다
-                    mWebView.loadUrl(mInputUrl);
-                    mEditText.setText("");
-                    mEditText.setHint(mInputUrl);
-                    break;
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+        if (mapsSelection) {
+            Toast.makeText(getApplication(), getString(R.string.long_press), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+        if (mapsSelection) {
+            Toast.makeText(getApplication(), getString(R.string.long_press), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+        Geocoder geocoder = new Geocoder(this);
+        if (mapsSelection) {
+            try {
+                MapPoint.GeoCoordinate mapPointGeo = mapPoint.getMapPointGeoCoord();
+                List<Address> list = null;
+                list = geocoder.getFromLocation(mapPointGeo.latitude, mapPointGeo.longitude, 10);
+                if (list != null) {
+                    if (list.size() == 0)
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_address), Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getApplicationContext(), getString(R.string.set_map_loc_ok), Toast.LENGTH_LONG).show();
+                    epEditext.setText(list.get(0).getAddressLine(0));
+                    recyclerView2.setVisibility(View.GONE);
+                    mapsSelection = false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), e.toString() + getString(R.string.error_default), Toast.LENGTH_LONG).show();
             }
         }
-    };
+    }
 
-    class webViewChrome extends WebChromeClient {
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+    }
 
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            //현제 페이지 진행사항을 ProgressBar를 통해 알린다.
-            if(newProgress < 100) {
-                mProgressBar.setProgress(newProgress);
-            } else {
-                mProgressBar.setVisibility(View.INVISIBLE);
-                mProgressBar.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
-            }
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(mapPOIItem.getMapPoint().getMapPointGeoCoord().latitude, mapPOIItem.getMapPoint().getMapPointGeoCoord().longitude), 2, true);
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
         }
     }
 
-    class webViewClient extends WebViewClient {
-
-        //Loading이 시작되면 ProgressBar처리를 한다.
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            mProgressBar.setVisibility(View.VISIBLE);
-            mProgressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 15));
-            view.loadUrl(url);
-            return true;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
         }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            mWebSettings.setJavaScriptEnabled(true);
-            mEditText.setHint(url);
-            super.onPageFinished(view, url);
-        }
+        mapView.setShowCurrentLocationMarker(false);
     }
 
-    //http://를 체크하여 추가한다.
-    private String httpInputCheck(String url) {
-        if(url.isEmpty()) return null;
+    @Override
+    public void onCurrentLocationUpdate(MapView mapView, MapPoint currentLocation, float accuracyInMeters) {
+    }
 
-        if(url.indexOf("http://") == ("http://").length()) return url;
-        else return "http://" + url;
+    @Override
+    public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateFailed(MapView mapView) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateCancelled(MapView mapView) {
     }
 }

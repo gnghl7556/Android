@@ -1,34 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <EditText
+        android:id="@+id/etOrigin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/start_edit" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/map_recyclerview1"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/etDestination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:hint="@string/end_edit" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/map_recyclerview2"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="57dp"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/edit_Url"
+        <Button
+            android:id="@+id/btnFindPath"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint=""
-            android:inputType="textUri"
-            android:minHeight="48dp"
-            android:singleLine="true"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.2"
+            android:background="@color/black"
+            android:text="카카오 맵 연동"
+            android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/btn_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="검색하기" />
+            android:id="@+id/myFindPath"
+            android:layout_width="13dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="7dp"
+            android:layout_weight="0.5"
+            android:background="@color/black"
+            android:text="현재위치로 지정"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/myMapPath"
+            android:layout_width="10dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_weight="0.5"
+            android:background="@color/black"
+            android:text="지도에서 검색"
+            android:textColor="@color/white" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="441dp">
+
+        <net.daum.mf.map.api.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/mypositions"
+            android:layout_width="78dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="bottom|right"
+            app:srcCompat="@drawable/position" />
+    </FrameLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -40,16 +99,9 @@
         android:secondaryProgress="1"
         android:visibility="visible" />
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="549dp">
-
-    </WebView>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="51dp"
+        android:layout_height="105dp"
         android:orientation="horizontal">
 
         <TextView
@@ -83,7 +135,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="129dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -92,6 +144,7 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
             android:text="35"
+            android:textColor="@color/white"
             android:textSize="80sp" />
 
         <TextView
@@ -99,7 +152,8 @@
             android:layout_width="23dp"
             android:layout_height="match_parent"
             android:gravity="bottom"
-            android:text="Km" />
+            android:text="Km"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textView13"
@@ -107,6 +161,7 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
             android:text="23"
+            android:textColor="@color/white"
             android:textSize="80sp" />
 
         <TextView
@@ -114,7 +169,8 @@
             android:layout_width="27dp"
             android:layout_height="match_parent"
             android:gravity="bottom|right"
-            android:text="Km" />
+            android:text="Km"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textView14"
@@ -122,13 +178,8 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
             android:text="시간데이터"
+            android:textColor="@color/white"
             android:textSize="30dp" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnback2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Back" />
 
 </LinearLayout>

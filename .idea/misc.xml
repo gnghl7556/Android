@@ -5,17 +5,20 @@
       <map>
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.34270833333333334" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/font/fontstyle.xml" value="0.4390625" />
-        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/activity_main.xml" value="0.67" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/activity_main2.xml" value="0.18" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/activity_maps_naver.xml" value="0.3328125" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/eventcall_layout.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/fragment_1.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/fragment_2.xml" value="0.2692502532928065" />
-        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/service_layout.xml" value="0.3807291666666667" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/itemlocation.xml" value="0.4973958333333333" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/map.xml" value="0.4227353463587922" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/service_layout.xml" value="0.25" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/setting_layout.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/speed_layout.xml" value="0.5536458333333333" />
-        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/speed_layout2.xml" value="0.22" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/speed_layout2.xml" value="0.18" />
         <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/speedcheck.xml" value="0.3082077051926298" />
+        <entry key="..\:/Users/PC/AndroidStudioProjects/Android/app/src/main/res/layout/view_loader.xml" value="0.4973958333333333" />
         <entry key="..\:/Users/PC/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/simple_list_item_1.xml" value="0.5536458333333333" />
       </map>
     </option>

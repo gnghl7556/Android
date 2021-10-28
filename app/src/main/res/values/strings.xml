@@ -1,3 +1,160 @@
 <resources>
+    <string name="restapi_key">KakaoAK 0f820d6930fab33b09ca958e7f0a63e1</string>
     <string name="app_name">bike_project</string>
+
+    <string name="permission_1">[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>
+    <string name="permission_2">맵사용을 위해 위치정보 이용 권한이 필요합니다.</string>
+    <string name="open">열기</string>
+    <string name="close">닫기</string>
+    <string name="share">공유하기</string>
+    <string name="mobile_data">이 기능은 모바일 데이터를 사용하여 사용료가 부과될 수 있습니다.</string>
+    <string name="route_data">목록을 길게 누르면 해당 목록의 삭제 및 지도를 볼 수 있습니다.</string>
+    <string name="error_route">위치 초기화에 실패하였습니다.</string>
+    <string name="error_address">주소 취득 실패</string>
+    <string name="nav_title_direction">경로 찾기</string>
+    <string name="nav_title_route">주행 기록</string>
+    <string name="nav_title_com">시설 검색</string>
+    <string name="nav_title_timetask">사고 감지 관리</string>
+    <string name="nav_title_ajm">라이딩 도움말</string>
+    <string name="start_location_detect">위치를 찾고 있습니다. \n잠시만 기다려주세요.</string>
+    <string name="wear_helmet">주행을 시작합니다.</string>
+    <string name="max_speed">최고속도:</string>
+    <string name="average_speed">평균속도:</string>
+    <string name="distance">거리:</string>
+    <string name="time">시간:</string>
+    <string name="accuracy">위치오차:</string>
+    <string name="startAddr">출발주소:</string>
+    <string name="endAddr">도착주소:</string>
+    <string name="startTime">출발시간:</string>
+    <string name="endTime">도착시간:</string>
+    <string name="calorie">칼로리:</string>
+    <string name="satellite">위성</string>
+    <string name="msg">권한을 요청합니다.</string>
+    <string name="waiting_for_fix">GPS 수신중 …</string>
+    <string name="gps_disabled">GPS 사용 안함</string>
+    <string name="please_enable_gps">이 앱을 사용하기 위해선 GPS 정보가 필요로 합니다.</string>
+    <string name="running">진행중인 경로 지정 중…</string>
+    <string name="notification">소모칼로리 : %1$s, 거리 : %2$s.</string>
+    <string name="previsions">예보</string>
+    <string name="settings">설정</string>
+    <string name="app_info">도움말</string>
+    <string name="pref_auto_average_summary">정지 시간은 평균 속도에 포함되지 않습니다.</string>
+    <string name="pref_miles_per_hour_summary">속도를 km/h 대신에 mi/h로 표시합니다.</string>
+    <string name="accept">확인</string>
+    <string name="select_place">리스트에서 선택해주십시오.</string>
+    <string name="no_internet_conection">인터넷 연결이 되지않았습니다. \n일부 기능을 이용할 수 없습니다.</string>
+    <string name="no_way">목적지를 찾을 수 없습니다.</string>
+    <string name="action_settings">설정</string>
+    <string name="menu">메뉴</string>
+    <string name="source_code_summary">소스 코드에 대한 액세스.</string>
+    <!--설정창-->
+    <string name="version">라이딩 버전</string>
+    <string name="alert">화면 전환 알람을 받으시겠습니까?</string>
+    <string name="route_saver">자동 경로 저장을 실행하시겠습니까?</string>
+    <string name="gps_level">GPS수신 감도를 설정합니다.</string>
+    <string name="weight_value">칼로리 계산을 위해 몸무게를 입력해주세요.</string>
+    <string name="pref_auto_average">자동으로 정지 시간을 감지</string>
+    <string name="pref_miles_per_hour">시간당 마일 사용</string>
+    <string name="autocancle_title">앱 종료시 자동으로 서비스 종료</string>
+    <string name="alert_title">안내 서비스를 받으시겠습니까?</string>
+    <string name="not_supprot_acc">이 단말기는 가속도계 센서를 지원하지 않습니다.</string>
+    <!--설정창-->
+    <string name="noti_id">라이딩</string>
+    <string name="title_activity_test">Map</string>
+    <string name="permission_error_title">위치 권한 에러</string>
+    <string name="permission_error_location">기기의 위치 권한을 켜주세요.</string>
+    <string name="permission_error_app_location">앱의 권한 설정에서 위치 권한을 켜주세요.</string>
+    <string name="permission_error_okay">확인</string>
+    <string name="permission_error_cancel">취소</string>
+    <string name="start">시작</string>
+    <string name="start_positon">출발 위치</string>
+    <string name="arrive_position">도착 위치</string>
+    <string name="show_map">주행 지도 보기</string>
+    <string name="stop">정지</string>
+    <string name="what">목록</string>
+    <string name="remove">목록 삭제</string>
+    <string name="category">선택해주세요.</string>
+    <string name="remove_category">기록이 삭제 되었습니다.</string>
+    <string name="tts_not_setup">음성 안내를 사용할 수 없습니다. \n앱을 다시 실행해주세요.</string>
+    <string name="default_gps_value">default</string>
+    <string-array name="gps_values">
+        <item>high</item>
+        <item>middle</item>
+        <item>low</item>
+        <item>default</item>
+    </string-array>
+    <string-array name="gps_weight">
+        <item>높은 GPS 수신강도</item>
+        <item>중간 GPS 수신강도</item>
+        <item>낮은 GPS 수신강도</item>
+        <item>기본 GPS 수신강도</item>
+    </string-array>
+    <string name="install">다운로드</string>
+    <string name="latitude_label">Latitude</string>
+    <string name="longitude_label">Longitude</string>
+    <string name="no_location_detected">위치가 발견되지 않았습니다. 장치에서 위치설정이 활성화되어 있는지 확인하십시오.</string>
+    <string name="not_connected">API 트래픽이 원할하지 않습니다. 다시 시도해주세요.</string>
+    <string name="alertsetting">선택을 해지하면 위험 구간 안내가 나오지 않습니다.</string>
+    <string name="autosaving">선택을 해지하면 자동 경로 저장이 되지 않습니다.</string>
+    <string name="autocancel">선택을 해지하면 앱이 화면에 없더라도 GPS와 넘어짐 감지 기능이 지속됩니다.</string>
+    <string name="bike">자전거</string>
+    <string name="introduce">소개</string>
+    <string name="wrong_data">저장 된 기록이 잘못 되었습니다.</string>
+    <string name="wrong_map">지도정보를 불러오는데 문제가 있습니다. \n다시 시도해주세요.</string>
+    <string name="left_alert">주위 구간에서 벗어납니다.</string>
+    <string name="moved_alert">주위 구간에 진입하였습니다.</string>
+    <string name="call_emergency">119 전화 걸기</string>
+    <string name="action_call">걸기</string>
+    <string name="call_alert">전화를 거시겠습니까? 장난 전화는 금물입니다!</string>
+    <string name="sorry_not_settup">죄송합니다. 이 기능을 사용할 수 없습니다.</string>
+    <string name="route_not_setup">정상적으로 경로 저장이 실행되지 않았습니다.\n다시 시도 해주세요.</string>
+    <string name="fall_detect">넘어짐을 감지했습니다.</string>
+    <string name="be_careful">갑작스러운 움직임이 감지되었습니다, 안전한 라이딩 하세요!</string>
+    <string name="be_careful_tts">안전한 라이딩 부탁드려요</string>
+    <string name="set_number">긴급 문자를 발송할 번호를 설정해주세요.</string>
+    <string name="number_ok">번호 설정 완료</string>
+    <string name="start_detect">안전 서비스 시작</string>
+    <string name="stop_detect">안전 서비스 중지</string>
+    <string name="remove_all_num">등록 번호 전체 삭제</string>
+    <string name="list">리스트:</string>
+    <string name="over_speed">과속 운행</string>
+    <string name="over_speed_alert">속도를 줄여주세요</string>
+    <string name="send_message">메세지 전송을 완료했습니다.</string>
+    <string name="google_api_error">구글 API 요청이 제한 되었습니다.</string>
+    <string name="input_start">출발지를 입력하세요.</string>
+    <string name="input_end">도착지를 입력하세요.</string>
+    <string name="navi_install">길찾기 기능을 이용하기 위해선 카카오맵을 다운로드 해야합니다. \n모바일 데이터 환경에선 데이터 사용료가 발생할 수 있습니다.</string>
+    <string name="error_default">알 수 없는 오류 발생.</string>
+    <string name="set_current_loc">현재 위치를 출발지로 설정합니다</string>
+    <string name="set_map_loc">원하는 도착지를 지도에서 길게 눌러주세요.</string>
+    <string name="exit_map_loc">지도에서 도착지 선택을 취소합니다.</string>
+    <string name="set_map_loc_ok">선택한 위치를 도착지로 설정합니다</string>
+    <string name="long_press">지도를 길게 눌러주세요.</string>
+    <string name="weight_val">몸무게는 10kg~120kg 사이로 입력해주세요.</string>
+    <string name="permission">라이딩 권한을 요청합니다.</string>
+    <string name="start_app">라이딩 시작</string>
+    <string name="are_u_ok">※사고 감지※ \n 괜찮다면 터치하세요</string>
+    <string name="find">검색</string>
+    <string name="start_edit">출발지를 입력해주세요</string>
+    <string name="end_edit">도착지를 입력해주세요</string>
+    <string name="direction">경로 찾기</string>
+    <string name="lately" translatable="false">최근 검색</string>
+    <string name="my_loc">현위치로 지정</string>
+    <string name="set_map">지도에서 검색</string>
+    <string name="run_lock">화면 잠금 실행</string>
+    <string name="un_lock">화면 잠금 해제</string>
+    <string name="save_how_many">저장된 기록 총 :</string>
+    <string name="donot_save">저장된 기록이 없습니다.</string>
+    <string name="accident">사고 발생:</string>
+    <string name="sms_alert">이 서비스는 SMS 발신 요금이 발생할 수 있습니다.</string>
+    <string name="start_service_safe">라이딩 기능을 실행합니다.</string>
+    <string name="stop_service_safe">라이딩 기능을 종료합니다.</string>
+    <string name="reset">다시 입력해주세요.</string>
+    <string name="emergency_add">긴급 번호가 추가되었습니다.</string>
+    <string name="remove_all">전체 번호가 삭제되었습니다.</string>
+    <string name="tracksave">경로저장시작</string>
+    <string name="trackfinish">경로저장완료</string>
+    <string name="at_least_number">최소한 하나의 번호 지정이 필요합니다. 다시 시도하세요.</string>
+    <string name="title_activity_my_route">Map</string>
+
 </resources>
