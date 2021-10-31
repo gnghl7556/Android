@@ -44,7 +44,7 @@
             android:layout_marginLeft="5dp"
             android:layout_weight="0.2"
             android:background="@color/black"
-            android:text="카카오 맵 연동"
+            android:text="경로 찾기"
             android:textColor="@color/white" />
 
         <Button

@@ -56,9 +56,8 @@ dependencies {
     implementation files('libs/libDaumMapAndroid.jar')
 
     //레트로핏2
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     implementation 'com.squareup.okhttp3:okhttp:3.14.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'

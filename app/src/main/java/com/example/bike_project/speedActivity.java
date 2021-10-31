@@ -15,21 +15,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.bike_project.R.id;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -59,6 +55,7 @@ public class speedActivity extends Activity implements
         MapView.MapViewEventListener,
         MapView.POIItemEventListener,
         MapView.CurrentLocationEventListener {
+
     private LocationListener locationListener;
     private EditText spEditext;
     private EditText epEditext;
@@ -76,8 +73,12 @@ public class speedActivity extends Activity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.speed_layout2);
+
 
         final Geocoder geocoder = new Geocoder(this); //카카오맵
         spEditext = (EditText) findViewById(R.id.etOrigin);

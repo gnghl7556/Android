@@ -11,7 +11,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 블루투스 권한 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> <!-- 인터넷 권한 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
@@ -29,8 +31,8 @@
             android:value="rhr29df349" />
         <!--카카오-->
         <meta-data
-            android:name="com.kakao.sdk.Appkey"
-            android:value="0f820d6930fab33b09ca958e7f0a63e1"/>
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/daummap_key" />
         <!--구글-->
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBACkdy-jt1PDspzC0HZ-zcA89sGU_Dcjg"/>

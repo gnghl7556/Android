@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -130,11 +134,13 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButtonNext() {
         if(temp_name == null) {
             Toast.makeText(getApplicationContext(),"블루투스를 페어링 해주세요",Toast.LENGTH_SHORT).show();
+            Intent intent_speed = new Intent(getApplicationContext(), speedActivity.class);//발표를위한 임시 조치
+            startActivity(intent_speed);//발표를 위한 임시 조치
         }else{
             Toast.makeText(getApplicationContext(),temp_name+"에 연결",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), serviceActivity.class);
-            intent.putExtra("bluetooth_address",temp_addres);
-            startActivity(intent);
+            Intent intent_service = new Intent(getApplicationContext(), serviceActivity.class);
+            intent_service.putExtra("bluetooth_address",temp_addres);
+            startActivity(intent_service);
         }
     }
 

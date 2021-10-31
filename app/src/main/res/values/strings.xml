@@ -1,5 +1,6 @@
 <resources>
-    <string name="restapi_key">KakaoAK 0f820d6930fab33b09ca958e7f0a63e1</string>
+    <string name="daummap_key">0f820d6930fab33b09ca958e7f0a63e1</string>
+    <string name="restapi_key">KakaoAK 677ae1934c4139e0cd5255015d015b84</string>
     <string name="app_name">bike_project</string>
 
     <string name="permission_1">[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>

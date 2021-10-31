@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/black">
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/etOrigin"
@@ -17,7 +17,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/map_recyclerview1"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="200dp"
         android:visibility="gone" />
 
     <EditText
@@ -31,7 +31,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/map_recyclerview2"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="200dp"
         android:visibility="gone" />
 
     <LinearLayout
@@ -40,18 +40,8 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnFindPath"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="0.2"
-            android:background="@color/black"
-            android:text="카카오 맵 연동"
-            android:textColor="@color/white" />
-
-        <Button
             android:id="@+id/myFindPath"
-            android:layout_width="13dp"
+            android:layout_width="110dp"
             android:layout_height="50dp"
             android:layout_marginLeft="7dp"
             android:layout_weight="0.5"
@@ -60,14 +50,25 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/myMapPath"
-            android:layout_width="10dp"
+            android:id="@+id/btnFindPath"
+            android:layout_width="140dp"
             android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.2"
+            android:background="@color/black"
+            android:text="길 찾기 (kakao map)"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/myMapPath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
             android:layout_marginRight="7dp"
             android:layout_weight="0.5"
             android:background="@color/black"
-            android:text="지도에서 검색"
+            android:text=""
+            android:visibility="gone"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -78,26 +79,17 @@
         <net.daum.mf.map.api.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="558dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/mypositions"
-            android:layout_width="78dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
             android:clickable="true"
-            android:gravity="bottom|right"
             app:srcCompat="@drawable/position" />
-    </FrameLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:max="100"
-        android:progress="0"
-        android:secondaryProgress="1"
-        android:visibility="visible" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
